@@ -1,3 +1,4 @@
+import { createContactSchema, updateContactSchema } from "../schemas/contactsSchemas.js";
 import HttpError from "./HttpError.js";
 
 const validateBody = (schema) => {
@@ -12,4 +13,6 @@ const validateBody = (schema) => {
   return func;
 };
 
+export const validateCreateContactBody = validateBody(createContactSchema);
+export const validateUpdateContactBody = validateBody(updateContactSchema);
 export default validateBody;
