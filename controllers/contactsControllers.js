@@ -3,6 +3,7 @@ import {
   getContactById,
   listContacts,
   removeContact,
+  updateContact,
 } from '../services/contactsServices.js';
 import { createContactSchema } from '../schemas/contactsSchemas.js';
 
@@ -20,7 +21,7 @@ export const getOneContact = async (req, res) => {
     res.status(200).json(contactById);
   } else {
     return res.status(404).json({
-      message: 'User not exist',
+      message: 'Not found',
     });
   }
 };
@@ -33,7 +34,7 @@ export const deleteContact = async (req, res) => {
     res.status(200).json(contact);
   } else {
     return res.status(404).json({
-      msg: 'Not found',
+      message: 'Not found',
     });
   }
 };
@@ -51,24 +52,23 @@ export const createContact = async (req, res) => {
   res.status(201).json(newContact);
 };
 
-export const updateContact = async (req, res) => {
+export const updateContacts = async (req, res) => {
   const { id } = req.params;
 
   try {
-    const updateContact = await updateContact(id, req.body);
+    const updatedContact = await updateContact(id, req.body);
     if (Object.keys(req.body).length === 0) {
       return res
         .status(400)
         .json({ message: 'Body must have at least one field' });
     }
-    if (!updateContact) {
+    if (!updatedContact) {
       return res.status(404).json({ message: 'Not found' });
     }
 
-    res.status(200).json(updateContact);
+    res.status(200).json(updatedContact);
   } catch (error) {
-    console.error('Error with updating contac:', error);
-
+    console.error('Error updating contact:', error);
     res.status(500).json({ message: 'Server error' });
   }
 };
