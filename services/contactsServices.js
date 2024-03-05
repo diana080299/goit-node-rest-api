@@ -51,6 +51,7 @@ export const addContact = async ({ name, email, phone }) => {
     return newContact;
   } catch (error) {}
 };
+
 export const updateContact = async (id, data) => {
   try {
     const contacts = await listContacts();
@@ -67,6 +68,7 @@ export const updateContact = async (id, data) => {
 
     return updatedContact;
   } catch (error) {
+    console.error('Error updating contact:', error);
     throw error;
   }
 };
