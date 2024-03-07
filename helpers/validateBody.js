@@ -2,6 +2,7 @@ import HttpError from './HttpError.js';
 import {
   createContactSchema,
   updateContactSchema,
+  updateStatusContactSchema,
 } from '../schemas/contactsSchemas.js';
 
 export const validateBody = (schema) => {
@@ -18,3 +19,6 @@ export const validateBody = (schema) => {
 
 export const validateCreateContactBody = validateBody(createContactSchema);
 export const validateUpdateContactBody = validateBody(updateContactSchema);
+export const validateUpdateStatusContact = validateBody(
+  updateStatusContactSchema
+);
