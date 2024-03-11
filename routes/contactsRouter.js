@@ -13,8 +13,10 @@ import {
   validateUpdateStatusContact,
 } from '../helpers/validateBody.js';
 import { isIdValid } from '../middlewares/index.js';
+import { protect } from '../middlewares/usersMiddlewares.js';
 
 const contactsRouter = express.Router();
+contactsRouter.use(protect);
 
 contactsRouter.get('/', getAllContacts);
 
