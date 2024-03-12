@@ -40,19 +40,33 @@ export const login = async ({ email, password }) => {
 export const getUserById = (id) => User.findById(id);
 
 export const logout = async (token) => {
+  console.log('Logout request received with token:', token);
+
   if (!token) {
+    console.log('No token provided');
     throw new HttpError(401, 'Not authorized');
   }
-  const userId = jwtService.checkToken(token);
 
-  if (!userId) throw HttpError(401, 'Not authorized');
+  const userId = jwtService.checkToken(token);
+  console.log('Decoded user ID:', userId);
+
+  if (!userId) {
+    console.log('Invalid token');
+    throw new HttpError(401, 'Not authorized');
+  }
 
   const currentUser = await getUserById(userId);
+  console.log('Current user:', currentUser);
 
-  if (!currentUser) throw HttpError(401, 'Not authorized');
+  if (!currentUser) {
+    console.log('User not found');
+    throw new HttpError(401, 'Not authorized');
+  }
 
   currentUser.token = null;
   await currentUser.save();
+  console.log('User token set to null:', currentUser);
+
   return;
 };
 
