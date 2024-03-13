@@ -2,10 +2,7 @@ import { Contact } from '../model/contact.js';
 
 import HttpError from '../helpers/HttpError.js';
 
-export const getContactsList = async (ownerId) => {
-  const contacts = await Contact.find({ owner: ownerId });
-  return contacts;
-};
+export const getContactsList = (ownerId) => Contact.find({ owner: ownerId });
 
 export const getContactById = (id, ownerId) =>
   Contact.findOne({ _id: id, owner: ownerId });
@@ -31,4 +28,4 @@ export const checkContactExists = async (filter, throwError = true) => {
   }
   return contactExists;
 };
-export * as ContactsService from './contactsServices.js';
+export * as contactsServices from './contactsServices.js';
