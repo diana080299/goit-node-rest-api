@@ -1,23 +1,21 @@
-import * as contactsService from '../services/contactsServices.js';
+import * as contactsServices from '../services/contactsServices.js';
 import { catchAsync } from '../helpers/catchAsync.js';
 
 export const getAllContacts = catchAsync(async (req, res) => {
   const ownerId = req.user.id;
-  const contacts = await contactsService.getContactsList(ownerId);
-
+  const contacts = await contactsServices.getContactsList(ownerId);
   res.status(200).json(contacts);
 });
 
 export const getOneContact = catchAsync(async (req, res) => {
   const ownerId = req.user.id;
-  const contactById = await contactsService.getContactById(
+  const contactById = await contactsServices.getContactById(
     req.params.id,
     ownerId
   );
-
   if (!contactById) {
     return res.status(404).json({
-      message: 'Not found',
+      msg: 'Not found..',
     });
   } else {
     res.status(200).json(contactById);
@@ -26,43 +24,42 @@ export const getOneContact = catchAsync(async (req, res) => {
 
 export const deleteContact = catchAsync(async (req, res) => {
   const ownerId = req.user.id;
-  const removedContact = await contactsService.removeContact(
+  const removedContact = await contactsServices.removeContact(
     req.params.id,
     ownerId
   );
-
   if (!removedContact) {
     return res.status(404).json({
       message: 'Not found',
     });
-  } else {
-    res.status(200).json(removedContact);
   }
+  res.status(200).json(removedContact);
 });
 
 export const createContact = catchAsync(async (req, res) => {
-  const contact = await contactsService.checkContactExists({
+  const contact = await contactsServices.checkContactExists({
     email: req.body.email,
   });
-
   if (!contact) {
     const ownerId = req.user.id;
-    const newContact = await contactsService.addContact(req.body, ownerId);
+    const newContact = await contactsServices.addContact(req.body, ownerId);
+
     res.status(201).json(newContact);
   }
 });
 
 export const updateContacts = catchAsync(async (req, res) => {
   const ownerId = req.user.id;
-  const updateContact = await contactsService.updateContact(
+  const updatedContact = await contactsServices.updateContact(
     req.params.id,
     ownerId,
     req.body,
-    { new: true }
+    {
+      new: true,
+    }
   );
-
-  if (!updateContact) {
-    return req.status(404).json({
+  if (!updatedContact) {
+    return res.status(404).json({
       message: 'Not found',
     });
   }
@@ -72,14 +69,13 @@ export const updateContacts = catchAsync(async (req, res) => {
       .status(400)
       .json({ message: 'Body must have at least one field' });
   }
-
-  res.status(200).json(updateContact);
+  res.status(200).json(updatedContact);
 });
 
 export const updateStatusContact = catchAsync(async (req, res) => {
   const { favorite } = req.body;
   const ownerId = req.user.id;
-  const result = await contactsService.updateStatusContact(
+  const result = await contactsServices.updateStatusContact(
     req.params.id,
     ownerId,
     { favorite },
