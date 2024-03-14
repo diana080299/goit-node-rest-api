@@ -1,4 +1,4 @@
-import HttpError from './HttpError.js';
+import HttpError from '../helpers/HttpError.js';
 import {
   createContactSchema,
   updateContactSchema,
@@ -6,7 +6,7 @@ import {
 } from '../schemas/contactsSchemas.js';
 import { createUserSchema } from '../schemas/userSchemas.js';
 
-export const validateBody = (schema) => {
+const validateBody = (schema) => {
   const func = (req, _, next) => {
     const { error } = schema.validate(req.body);
     if (error) {
@@ -23,5 +23,4 @@ export const validateUpdateContactBody = validateBody(updateContactSchema);
 export const validateUpdateStatusContact = validateBody(
   updateStatusContactSchema
 );
-
 export const validateCreateUserBody = validateBody(createUserSchema);
