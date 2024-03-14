@@ -1,9 +1,9 @@
 import { catchAsync } from '../helpers/catchAsync.js';
 import { jwtService } from '../services/jwtService.js';
 import { userService } from '../services/userService.js';
-import HttpError from '../helpers/HttpError.js';
+import HttpError from './../helpers/HttpError.js';
 
-export const protect = catchAsync(async (req, res, next) => {
+const protect = catchAsync(async (req, res, next) => {
   const token =
     req.headers.authorization?.startsWith('Bearer ') &&
     req.headers.authorization.split(' ')[1];
@@ -23,3 +23,5 @@ export const protect = catchAsync(async (req, res, next) => {
   req.user = currentUser;
   next();
 });
+
+export default protect;

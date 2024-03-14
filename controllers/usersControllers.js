@@ -1,7 +1,5 @@
 import { userService } from '../services/userService.js';
 import { catchAsync } from '../helpers/catchAsync.js';
-import { configDotenv } from 'dotenv';
-configDotenv();
 
 export const signup = catchAsync(async (req, res) => {
   const userExists = await userService.checkUserExists({
@@ -26,7 +24,6 @@ export const signup = catchAsync(async (req, res) => {
 
 export const login = catchAsync(async (req, res) => {
   const user = await userService.login(req.body);
-  console.log('Generated token:', user.token);
 
   res.status(200).json({
     user: {
@@ -36,16 +33,15 @@ export const login = catchAsync(async (req, res) => {
     token: user.token,
   });
 });
-
 export const logout = catchAsync(async (req, res) => {
   const token =
     req.headers.authorization?.startsWith('Bearer ') &&
     req.headers.authorization.split(' ')[1];
 
   await userService.logout(token);
-  res.status(204).send();
-});
 
+  res.status(204).end();
+});
 export const getCurrentUser = (req, res) => {
   res.status(200).json({
     email: req.user.email,
