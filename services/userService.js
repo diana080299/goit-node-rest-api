@@ -1,5 +1,5 @@
 import { User } from '../model/userModel.js';
-import { jwtService } from './jwtService.js';
+import { jwtService } from '../services/jwtService.js';
 import HttpError from '../helpers/HttpError.js';
 import bcrypt from 'bcrypt';
 

@@ -11,4 +11,5 @@ const HttpError = (status, message = messageList[status]) => {
   error.status = status;
   return error;
 };
+
 export default HttpError;
