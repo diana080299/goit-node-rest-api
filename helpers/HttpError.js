@@ -7,9 +7,17 @@ const messageList = {
 }
 
 const HttpError = (status, message = messageList[status]) => {
+<<<<<<< Updated upstream
     const error = new Error(message);
     error.status = status;
     return error;
 }
 
 export default HttpError;
+=======
+  const error = Error(message);
+  error.status = status;
+  return error;
+};
+export default HttpError;
+>>>>>>> Stashed changes
