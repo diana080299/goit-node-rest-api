@@ -1,13 +1,15 @@
 import { User } from '../model/userModel.js';
 import { jwtService } from '../services/jwtService.js';
 import HttpError from '../helpers/HttpError.js';
-import bcrypt from 'bcrypt';
+import { ImageService } from '../services/imageService.js';
+import path from 'path';
 
 export const signup = async (userData) => {
   const user = await User.create({
     ...userData,
   });
   await user.hashPassword();
+  await user.hashEmail();
   await user.save();
   const token = jwtService.signToken(user.id);
 
@@ -52,6 +54,28 @@ export const logout = async (token) => {
   currentUser.token = null;
   await currentUser.save();
   return;
+};
+export const updateMe = async (userData, user, file) => {
+  if (!file) throw HttpError(400, 'Please, add the file');
+  else {
+    user.avatarURL = await ImageService.saveImage(
+      file,
+      {
+        maxFileSize: 2 * 1024,
+        width: 250,
+        height: 250,
+      },
+      user,
+      'public',
+      'avatars'
+    );
+  }
+
+  Object.keys(userData).forEach((key) => {
+    user[key] = userData[key];
+  });
+
+  return user.save();
 };
 
 export * as userService from './userService.js';
