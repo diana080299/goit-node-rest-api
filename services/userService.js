@@ -21,10 +21,12 @@ export const signup = async (userData) => {
 
   return newUser;
 };
+
 export const checkUserExists = async (filter) => {
   const userExists = await User.exists(filter);
   return userExists;
 };
+
 export const updateUserToken = (id, body) => User.findByIdAndUpdate(id, body);
 export const login = async ({ email, password }) => {
   const user = await User.findOne({ email }).select('+password');
@@ -55,6 +57,7 @@ export const logout = async (token) => {
   await currentUser.save();
   return;
 };
+
 export const updateMe = async (userData, user, file) => {
   if (!file) throw HttpError(400, 'Please, add the file');
   else {

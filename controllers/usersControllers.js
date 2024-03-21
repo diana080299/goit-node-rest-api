@@ -1,6 +1,6 @@
-import { userService } from "../services/userService.js";
-import { catchAsync } from "../helpers/catchAsync.js";
-import gravatar from "gravatar";
+import { userService } from '../services/userService.js';
+import { catchAsync } from '../helpers/catchAsync.js';
+import gravatar from 'gravatar';
 
 export const signup = catchAsync(async (req, res) => {
   const { email } = req.body;
@@ -10,7 +10,7 @@ export const signup = catchAsync(async (req, res) => {
 
   if (userExists) {
     return res.status(409).json({
-      message: "Email  in use",
+      message: 'Email  in use',
     });
   }
   const avatar = gravatar.url(email);
@@ -38,8 +38,8 @@ export const login = catchAsync(async (req, res) => {
 });
 export const logout = catchAsync(async (req, res) => {
   const token =
-    req.headers.authorization?.startsWith("Bearer ") &&
-    req.headers.authorization.split(" ")[1];
+    req.headers.authorization?.startsWith('Bearer ') &&
+    req.headers.authorization.split(' ')[1];
 
   await userService.logout(token);
   res.status(204).send();
