@@ -11,13 +11,6 @@ export const signup = async (userData) => {
   await user.hashPassword();
   await user.hashEmail();
   await user.save();
-  const token = jwtService.signToken(user.id);
-
-  const newUser = await User.findByIdAndUpdate(
-    user._id,
-    { token },
-    { new: true }
-  );
 
   return newUser;
 };
