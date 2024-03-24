@@ -13,9 +13,7 @@ export const signup = catchAsync(async (req, res) => {
       message: 'Email  in use',
     });
   }
-  const avatar = gravatar.url(email);
-  console.log(avatar);
-  const newUser = await userService.signup({ ...req.body, avatar });
+  const newUser = await userService.signup({ ...req.body });
 
   res.status(201).json({
     user: {
