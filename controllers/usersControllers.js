@@ -6,38 +6,37 @@ import { sendEmail } from "../services/emailService.js";
 
 export const signup = catchAsync(async (req, res) => {
   const { email } = req.body;
-  const userExists = await userService.checkUserExists({
-    email: req.body.email,
-  });
+  const userExists = await userService.checkUserExists({ email });
 
   if (userExists) {
     return res.status(409).json({
-      message: "Email  in use",
+      message: "Email in use",
     });
   }
   const avatar = gravatar.url(email);
   const verificationToken = v4();
+
   const newUser = await userService.signup({
     ...req.body,
     avatar,
     verificationToken,
   });
+  
   const verifyEmail = {
     to: email,
     subject: "Verify email",
-    html: `<a target="_blank" href="http://localhost:3000/api/users/verify/${verificationToken}" >Click verify email</a>`,
+    html: `<a target="_blank" href="http://localhost:3000/api/users/verify/${verificationToken}" >Click to verify your email</a>`,
   };
   await sendEmail(verifyEmail);
 
   res.status(201).json({
     user: {
-      name: newUser.name,
       email: newUser.email,
-
       subscription: newUser.subscription,
     },
   });
 });
+
 export const verifyEmail = catchAsync(async (req, res) => {
   const { verificationToken } = req.params;
   await userService.verify(verificationToken);
@@ -75,12 +74,7 @@ export const logout = catchAsync(async (req, res) => {
   await userService.logout(token);
   res.status(204).send();
 });
-// export const getCurrentUser = (req, res) => {
-//   res.status(200).json({
-//     email: req.user.email,
-//     subscription: req.user.subscription,
-//   });
-// };
+
 
 export const getCurrentUser = async (req, res) => {
   try {
